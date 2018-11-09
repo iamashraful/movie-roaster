@@ -1,0 +1,40 @@
+const ApiServer = 'https://api.themoviedb.org/'
+const currentVersion = '3'  // Your version
+const ApiKey = 'your-api-key'
+const ImageServer = 'https://image.tmdb.org/t/p/'
+const imageSize = {
+    small: 'w185_and_h278_bestv2',
+    medium: 'w185_and_h278_bestv2',
+    large: 'w600_and_h900_bestv2'
+}
+
+
+export default {
+    ApiServer: ApiServer,
+    version: currentVersion,
+    ApiKey: ApiKey,
+    ImageServer: ImageServer,
+    imageSize: imageSize,
+
+    extactParams(params) {
+        /**
+         * Extacting a list of params and convert to plain url enqoute params
+         */
+        let urlParamsStr = '?api_key=' + this.ApiKey + '&'
+        params.forEach(item => {
+            urlParamsStr += item.key + '=' + item.value
+            urlParamsStr += '&'
+        });
+        return urlParamsStr
+    },
+    getApiUrl(path, params) {
+        /**
+         * path: It should be plain string like, "movie/nice-movie"
+         * params: It must be a list of object with key & value pair
+         */
+        return this.ApiServer + this.version + '/' + path + '/' + this.extactParams(params)
+    },
+    getImageUrl(file, size) {
+        return this.ImageServer + size + '/' + file
+    }
+}
